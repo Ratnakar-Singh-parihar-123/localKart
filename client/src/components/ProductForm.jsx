@@ -152,7 +152,7 @@ const ProductForm = ({ onSubmit, initialData, isLoading = false }) => {
       await onSubmit(formData);
 
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 1500);
+      setTimeout(() => setShowSuccess(false), 1000);
 
       if (!initialData) {
         resetForm();

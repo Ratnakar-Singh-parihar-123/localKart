@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
 });
 
 // Attach JWT token to every request
@@ -18,13 +18,13 @@ export const getProducts = () => API.get("/api/products");
 
 // CREATE PRODUCT
 export const createProduct = (formData) =>
-  API.post("/products", formData, {
+  API.post("/api/products", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 
 // UPDATE PRODUCT
 export const updateProduct = (id, formData) =>
-  API.put(`/products/${id}`, formData, {
+  API.put(`/api/products/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 

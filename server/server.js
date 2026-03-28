@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -12,22 +11,26 @@ connectDB();
 
 const app = express();
 
-//  CORS (allow frontend)
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://local-kart-gamma.vercel.app/",
+    credentials: true,
+  }),
+);
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // JSON support
+app.use(express.json());
 
-// 🔗 Routes
+//  API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
-//  Test Route
+//  Test
 app.get("/", (req, res) => {
   res.send("API Running...");
 });
 
-//  Global Error Handler (best practice)
+//  Error handler
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
   res.status(500).json({
@@ -35,7 +38,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-//  Server Start
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

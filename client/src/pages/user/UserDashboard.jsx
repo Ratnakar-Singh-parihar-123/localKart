@@ -17,7 +17,7 @@ import {
 import ProductModal from "../../components/ProductModal";
 
 // API base URL from env file
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const UserDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -40,7 +40,7 @@ const UserDashboard = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/products`);
+      const res = await axios.get(`${API_BASE}/api/products`);
       setProducts(res.data);
       setFilteredProducts(res.data);
 
