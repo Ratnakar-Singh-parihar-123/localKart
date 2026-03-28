@@ -1,7 +1,7 @@
 import Product from "../models/Product.js";
 
-// ================= CREATE PRODUCT =================
-// ================= CREATE PRODUCT =================
+// Register CREATE PRODUCT Register
+
 export const createProduct = async (req, res) => {
   try {
     console.log("BODY:", req.body);
@@ -21,9 +21,9 @@ export const createProduct = async (req, res) => {
     // Cloudinary image URL
     let imageUrl = "";
     if (req.file) {
-      imageUrl = req.file.path; // directly store Cloudinary URL
+      imageUrl = req.file.path;
     } else if (req.body.imageUrl) {
-      imageUrl = req.body.imageUrl; // optional
+      imageUrl = req.body.imageUrl;
     }
 
     const product = await Product.create({
@@ -32,7 +32,7 @@ export const createProduct = async (req, res) => {
       description: description || "",
       category: category || "",
       image: imageUrl,
-      createdBy: req.user.id, // <-- FIXED here
+      createdBy: req.user.id,
     });
 
     res.status(201).json(product);
@@ -45,7 +45,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// ================= GET ALL PRODUCTS =================
+// Register GET ALL PRODUCTS Register
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find().populate("createdBy", "name email");
@@ -56,7 +56,7 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// ================= GET SINGLE PRODUCT =================
+// Register GET SINGLE PRODUCT Register
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate(
@@ -71,7 +71,7 @@ export const getProduct = async (req, res) => {
   }
 };
 
-// ================= UPDATE PRODUCT =================
+// Register UPDATE PRODUCT Register
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -82,11 +82,11 @@ export const updateProduct = async (req, res) => {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // ✅ FIXED IMAGE LOGIC
+    // Register
     let imageUrl = product.image;
 
     if (req.file) {
-      imageUrl = req.file.path; // 🔥 CLOUDINARY URL
+      imageUrl = req.file.path;
     } else if (req.body.imageUrl) {
       imageUrl = req.body.imageUrl;
     }
@@ -106,7 +106,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// ================= DELETE PRODUCT =================
+// Register DELETE PRODUCT Register
 export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);

@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -27,7 +26,7 @@ const Navbar = () => {
     // Get user from localStorage
     const userData = JSON.parse(localStorage.getItem("user") || "null");
     setUser(userData);
-  }, [location.pathname]); // Re-fetch when route changes
+  }, [location.pathname]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

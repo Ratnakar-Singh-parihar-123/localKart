@@ -5,21 +5,21 @@ import jwt from "jsonwebtoken";
 // REGISTER
 export const register = async (req, res) => {
   try {
-    console.log("👉 REGISTER API HIT");
-    console.log("📦 Incoming Body:", req.body);
+    console.log(" REGISTER API HIT");
+    console.log(" Incoming Body:", req.body);
 
     const { name, email, password, role } = req.body;
 
     const userExist = await User.findOne({ email });
-    console.log("🔍 Checking if user exists:", userExist);
+    console.log(" Checking if user exists:", userExist);
 
     if (userExist) {
-      console.log("❌ User already exists");
+      console.log(" User already exists");
       return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("🔐 Hashed Password:", hashedPassword);
+    console.log("Hashed Password:", hashedPassword);
 
     const user = await User.create({
       name,
@@ -28,14 +28,14 @@ export const register = async (req, res) => {
       role,
     });
 
-    console.log("✅ User Created:", user);
+    console.log("Register User Created:", user);
 
     res.status(201).json({
       message: "User registered successfully",
       user,
     });
   } catch (error) {
-    console.log("🔥 REGISTER ERROR:", error);
+    console.log(" REGISTER ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -43,24 +43,24 @@ export const register = async (req, res) => {
 // LOGIN
 export const login = async (req, res) => {
   try {
-    console.log("👉 LOGIN API HIT");
-    console.log("📦 Incoming Body:", req.body);
+    console.log(" LOGIN API HIT");
+    console.log(" Incoming Body:", req.body);
 
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    console.log("🔍 Found User:", user);
+    console.log(" Found User:", user);
 
     if (!user) {
-      console.log("❌ Invalid Email");
+      console.log(" Invalid Email");
       return res.status(400).json({ message: "Invalid email" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("🔐 Password Match:", isMatch);
+    console.log(" Password Match:", isMatch);
 
     if (!isMatch) {
-      console.log("❌ Invalid Password");
+      console.log(" Invalid Password");
       return res.status(400).json({ message: "Invalid password" });
     }
 
@@ -70,7 +70,7 @@ export const login = async (req, res) => {
       { expiresIn: "7d" },
     );
 
-    console.log("✅ Token Generated:", token);
+    console.log("Register Token Generated:", token);
 
     res.json({
       message: "Login successful",
@@ -83,14 +83,14 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("🔥 LOGIN ERROR:", error);
+    console.log(" LOGIN ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
 // LOGOUT
 export const logout = (req, res) => {
-  console.log("👉 LOGOUT API HIT");
+  console.log(" LOGOUT API HIT");
   res.json({
     message: "Logged out successfully",
   });

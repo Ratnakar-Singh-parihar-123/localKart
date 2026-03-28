@@ -1,4 +1,3 @@
-// components/ProductModal.jsx
 import React, { useEffect, useState } from "react";
 import {
   X,

@@ -1,4 +1,3 @@
-// components/Profile.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, Shield, Edit2, Save, X, Camera } from "lucide-react";

@@ -12,23 +12,22 @@ connectDB();
 
 const app = express();
 
-// 🔥 CORS (allow frontend)
+//  CORS (allow frontend)
 app.use(cors());
 
-// 🔥 IMPORTANT (FormData + JSON support)
-app.use(express.urlencoded({ extended: true })); // form-data support
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // JSON support
 
 // 🔗 Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
-// 🏠 Test Route
+//  Test Route
 app.get("/", (req, res) => {
   res.send("API Running...");
 });
 
-// ❌ Global Error Handler (best practice)
+//  Global Error Handler (best practice)
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
   res.status(500).json({
@@ -36,9 +35,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 🚀 Server Start
+//  Server Start
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });
