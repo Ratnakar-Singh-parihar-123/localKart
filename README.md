@@ -92,13 +92,13 @@ Task/
 ### 1 Clone Repository
 
 ```bash
-git clone https://github.com/your-username/localkart.git
+git clone https://github.com/Ratnakar-Singh-parihar-123/localKart.git
 cd localkart
 ```
 
 ## Backend Setup
 
-cd server
+cd servers
 npm install
 
 ## Frontend Setup
