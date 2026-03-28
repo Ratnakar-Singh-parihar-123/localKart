@@ -1,14 +1,13 @@
 import Product from "../models/Product.js";
 
-// Register CREATE PRODUCT Register
-
+//  CREATE PRODUCT
 export const createProduct = async (req, res) => {
   try {
     console.log("BODY:", req.body);
     console.log("FILE:", req.file);
     console.log("USER:", req.user);
 
-    if (!req.user || !req.user.id) {
+    if (!req.user || !req.user._id) {
       return res.status(401).json({ message: "User not authorized" });
     }
 
@@ -18,8 +17,8 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ message: "Title and Price are required" });
     }
 
-    // Cloudinary image URL
     let imageUrl = "";
+
     if (req.file) {
       imageUrl = req.file.path;
     } else if (req.body.imageUrl) {
@@ -30,25 +29,29 @@ export const createProduct = async (req, res) => {
       title,
       price,
       description: description || "",
-      category: category || "",
+      category: category || "General",
       image: imageUrl,
-      createdBy: req.user.id,
+      createdBy: req.user._id,
     });
 
     res.status(201).json(product);
   } catch (error) {
     console.error("CREATE ERROR:", error);
-    if (error.name === "ValidationError") {
-      return res.status(400).json({ message: error.message });
-    }
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: error.message || "Server Error" });
   }
 };
 
-// Register GET ALL PRODUCTS Register
+//  GET ALL PRODUCTS (ONLY LOGGED-IN USER)
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("createdBy", "name email");
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authorized" });
+    }
+
+    const products = await Product.find({
+      createdBy: req.user._id,
+    }).populate("createdBy", "name email");
+
     res.json(products);
   } catch (error) {
     console.error("GET PRODUCTS ERROR:", error);
@@ -56,14 +59,18 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// Register GET SINGLE PRODUCT Register
+//  GET SINGLE PRODUCT (ONLY OWNER)
 export const getProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate(
-      "createdBy",
-      "name email",
-    );
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    const product = await Product.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    }).populate("createdBy", "name email");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     res.json(product);
   } catch (error) {
     console.error("GET PRODUCT ERROR:", error);
@@ -71,18 +78,18 @@ export const getProduct = async (req, res) => {
   }
 };
 
-// Register UPDATE PRODUCT Register
+//  UPDATE PRODUCT (ONLY OWNER)
 export const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    const product = await Product.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
 
-    // Authorization
-    if (req.user.role !== "admin" && !product.createdBy.equals(req.user._id)) {
-      return res.status(403).json({ message: "Not authorized" });
+    if (!product) {
+      return res.status(404).json({ message: "Not authorized or not found" });
     }
 
-    // Register
     let imageUrl = product.image;
 
     if (req.file) {
@@ -91,7 +98,6 @@ export const updateProduct = async (req, res) => {
       imageUrl = req.body.imageUrl;
     }
 
-    // Update fields
     product.title = req.body.title || product.title;
     product.price = req.body.price || product.price;
     product.description = req.body.description || product.description;
@@ -106,20 +112,22 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Register DELETE PRODUCT Register
+//  DELETE PRODUCT (ONLY OWNER)
 export const deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    const product = await Product.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
 
-    // Optional: Only admin or owner can delete
-    if (req.user.role !== "admin" && !product.createdBy.equals(req.user._id)) {
+    if (!product) {
       return res
-        .status(403)
-        .json({ message: "Not authorized to delete this product" });
+        .status(404)
+        .json({ message: "Not authorized or product not found" });
     }
 
     await product.deleteOne();
+
     res.json({ message: "Product deleted successfully" });
   } catch (error) {
     console.error("DELETE ERROR:", error);
