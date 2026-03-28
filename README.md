@@ -1,5 +1,15 @@
 # 🛒 LocalKart – (MERN Stack)
 
+
+
+![Home Page](./screenshots/home.png)
+![UserDashboard](./screenshots/Userdashboard.png)
+![ProductsDetails](./screenshots/ProductsDetails.png)
+![AdminFrom](./screenshots/AdminFrom.png)
+![AdminDashboard](./screenshots/AdminDashboard.png)
+
+
+
 🌟 A full-stack MERN application that enables users to explore and manage products from nearby businesses, with secure authentication and Cloudinary-based image uploads.
 
 ---
@@ -124,8 +134,3 @@ npm run dev
 
 npm run dev
 
-![Home Page](./screenshots/home.png)
-![UserDashboard](./screenshots/Userdashboard.png)
-![ProductsDetails](./screenshots/ProductsDetails.png)
-![AdminFrom](./screenshots/AdminFrom.png)
-![AdminDashboard](./screenshots/AdminDashboard.png)
