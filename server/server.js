@@ -7,6 +7,8 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config();
+
+//  DB connect with error handling
 connectDB();
 
 const app = express();
@@ -17,48 +19,53 @@ const allowedOrigins = [
   "https://local-kart-gamma.vercel.app",
 ];
 
-//  CORS setup (FIXED )
+//  SAFE CORS (NO CRASH )
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       } else {
-        callback(new Error("CORS not allowed"));
+        console.log(" Blocked by CORS:", origin);
+        return callback(null, false);
       }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   }),
 );
 
-//  Handle preflight requests (VERY IMPORTANT )
-app.options("*", cors());
-
 //  Middlewares
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//  API Routes
+//  Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
-//  Test route
+//  Health check
 app.get("/", (req, res) => {
-  res.send("API Running...");
+  res.send(" API Running...");
 });
 
-//  Error handler
+//  404 handler (IMPORTANT)
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+//  Global error handler
 app.use((err, req, res, next) => {
-  console.error("GLOBAL ERROR:", err);
+  console.error("🔥 ERROR:", err.message);
   res.status(500).json({
-    message: err.message || "Something went wrong",
+    message: err.message || "Internal Server Error",
   });
 });
 
-//  Server
+//  Server start
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });
