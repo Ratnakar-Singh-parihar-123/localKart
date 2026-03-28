@@ -14,7 +14,7 @@ API.interceptors.request.use((req) => {
 });
 
 // GET ALL PRODUCTS
-export const getProducts = () => API.get("/products");
+export const getProducts = () => API.get("/api/products");
 
 // CREATE PRODUCT
 export const createProduct = (formData) =>
@@ -29,4 +29,4 @@ export const updateProduct = (id, formData) =>
   });
 
 // DELETE PRODUCT
-export const deleteProduct = (id) => API.delete(`/products/${id}`);
+export const deleteProduct = (id) => API.delete(`/api/products/${id}`);
