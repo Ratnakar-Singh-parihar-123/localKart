@@ -97,7 +97,7 @@ const AdminDashboard = () => {
   const showToast = (message, type = "success") => {
     setSuccessMessage(message);
     setShowSuccessToast(true);
-    setTimeout(() => setShowSuccessToast(false), 3000);
+    setTimeout(() => setShowSuccessToast(false), 1500);
   };
 
   // Create new product
@@ -348,7 +348,7 @@ const AdminDashboard = () => {
                           src={
                             product.image?.startsWith("http")
                               ? product.image
-                              : `http://localhost:8000${product.image}`
+                              : `https://localkart-irj2.onrender.com${product.image}`
                           }
                           alt={product.title}
                           className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
