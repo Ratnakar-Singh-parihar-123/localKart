@@ -137,8 +137,8 @@ const ProductForm = ({ initialData, onSuccess }) => {
       if (!token) throw new Error("No auth token found. Please login.");
 
       const endpoint = initialData
-        ? `http://localhost:8001/api/products/${initialData._id}`
-        : "http://localhost:8001/api/products";
+        ? `https://localkarts.onrender.com/api/products/${initialData._id}`
+        : "https://localkarts.onrender.com/products";
 
       const method = initialData ? "put" : "post";
 
