@@ -138,7 +138,7 @@ const ProductForm = ({ initialData, onSuccess }) => {
 
       const endpoint = initialData
         ? `https://localkarts.onrender.com/api/products/${initialData._id}`
-        : "https://localkarts.onrender.com/products";
+        : "https://localkarts.onrender.com/api/products";
 
       const method = initialData ? "put" : "post";
 
