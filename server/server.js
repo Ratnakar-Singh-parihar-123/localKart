@@ -17,10 +17,10 @@ const app = express();
 
 //  Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://local-kart-zeta.vercel.app/",
+  "http://localhost:5173",               
+  "https://local-kart-gamma.vercel.app", 
+  "https://local-kart-zeta.vercel.app",  
 ];
-
 //  CORS (FIXED - only once)
 app.use(
   cors({
