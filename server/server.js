@@ -18,7 +18,7 @@ const app = express();
 //  Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://local-kart-gamma.vercel.app",
+  "https://local-kart-zeta.vercel.app/",
 ];
 
 //  CORS (FIXED - only once)
@@ -41,7 +41,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Serve uploads folder statically
+//  Serve uploads folder statically
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 //  API Routes
@@ -59,7 +59,7 @@ app.get("/test-products", (req, res) => {
   res.json({ message: "Products route working" });
 });
 app.get("/", (req, res) => {
-  res.send("🚀 API Running...");
+  res.send(" API Running...");
 });
 
 //  404 handler (important)
